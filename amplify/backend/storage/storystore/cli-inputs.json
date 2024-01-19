@@ -1,0 +1,16 @@
+{
+  "resourceName": "storystore",
+  "policyUUID": "41a2a115",
+  "bucketName": "auth271fa9d77521a48a78246e8e2cb04ee7f",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

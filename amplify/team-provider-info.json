@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "auth28122435c": {}
+      },
+      "storage": {
+        "storystore": {}
+      },
+      "api": {
+        "auth2": {}
       }
     }
   }

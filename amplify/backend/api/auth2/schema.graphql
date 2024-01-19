@@ -1,0 +1,66 @@
+enum SubscriptionStatus {
+  OFFERED
+  REQUESTED
+  ACCEPTED
+}
+
+type Subscriptions @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  creatorId: ID
+  subscriberEmail: AWSEmail
+  subscriberId: ID
+  createdAt: AWSDateTime
+  SubscriptionStatus: SubscriptionStatus
+}
+
+enum ShareType {
+  PERSON
+  GROUP
+  FOLLOWERS
+}
+
+type Share @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  book: ID
+  shareType: ShareType
+  recipient: String
+}
+
+type MediaRaw @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  type: String
+  createdAt: String
+  createdBy: String
+  originalFileName: String
+}
+
+type ImageRaw @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  s3_filename: String
+  createdAt: AWSDateTime
+  createdBy: String
+  originalFileName: String
+}
+
+type Book @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  createdAt: AWSDateTime
+  cover_s3_key: String
+  creatorUserId: String
+  bookPages: [String]
+  intro_video_s3_key: String
+  outro_video_s3_key: String
+  raw_book_read_s3_key: String
+}
+
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  email: AWSEmail! @primaryKey
+  given_name: String
+  family_name: String
+  oauth_provider: String
+  oauth_provider_id: String
+}
+ 
