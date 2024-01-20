@@ -9,6 +9,7 @@ import awsconfig from './aws-exports';
 import { generateClient } from "aws-amplify/api";
 import { listUsers } from "./graphql/queries";
 import { createUser } from './graphql/mutations';
+import { deleteUser } from './graphql/mutations';
 
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { getCurrentUser } from 'aws-amplify/auth';
@@ -18,12 +19,78 @@ import { getUrl } from 'aws-amplify/storage';
   const client = generateClient()
 
 
+const getUserByEmail = async (email) => {
+  var userRow = {"exists":false}
+  try{
+    // List all items
+    const userRows = await client.graphql({
+        query: listUsers,
+        variables:{filter:{email:{eq:email}}}
+    });
+    if(userRows.data.listUsers.items.length>0){
+      userRow = {...userRow,...userRows.data.listUsers.items[0]}
+      userRow.exists=true
+    }
+
+
+  } catch (err) {
+    console.log('Error getting user')
+    console.log(err)
+}
+return userRow;
+
+}
 
 
 
-  function App({ signOut }) {
+const createUserRow = async (userAttributes) => {
+  console.log('creating new user')
+  var newUser = {exists:false}
+  try{
+    console.log('email: '+userAttributes.email)
+    console.log('oauth_provider: '+userAttributes.identitiesParsed[0].providerName)
+    console.log('oauth_provider_id: '+userAttributes.identitiesParsed[0].userId)
+    const newUserRow = await client.graphql({
+        query: createUser,
+        variables: {
+            input: {
+            "email": 'will.benish@gmail.com'}
+            }
+        })
+        console.log(newUserRow)
 
-    const [userList,setUserList]=useState([])
+    newUser = newUserRow.data.createUser
+    newUser.exists=true
+
+    
+
+
+    } catch(err){
+      console.log(err)
+      console.log('failed to add new user Row')
+    }
+
+    return newUser
+
+}
+
+const deleteWillBenish = async () => {
+  const newUserRow = await client.graphql({
+    query: deleteUser,
+    variables: {
+        input: {
+        "email": 'tester@test.com'}
+        }
+    })
+}
+
+
+
+
+
+  function App({ user, signOut }) {
+
+    const [userProfile,setUserProfile] = useState({exists:false})
 
     const getImageUrl = async(filename)=>{
       const getUrlResult = await getUrl({
@@ -37,29 +104,32 @@ import { getUrl } from 'aws-amplify/storage';
          return getUrlResult.url.href
          
     }
+  
 
     async function validateUser()  {
       console.log('validate user')
+      var userAttributes = await fetchUserAttributes()
+      userAttributes.identitiesParsed=JSON.parse(userAttributes.identities)
+      userAttributes.cognitoId = userAttributes.sub
+
+      var currentUser =  await getUserByEmail(userAttributes.email)
   
-      try{
-            // List all items
-        const userRows = await client.graphql({
-            query: listUsers,
-            variables:{}
-        });
+      if(!currentUser.exists){
+        var newUser = await createUserRow(userAttributes)
+        if(newUser.exists){
+          currentUser = newUser
+        }
+      }
+      if(currentUser.exists){
+      setUserProfile(currentUser)
+      }
+      console.log('Current User:')
+      console.log(currentUser)
 
-        setUserList(userRows.data.listUsers.items)
 
-        const currentUser = await getCurrentUser()
-        console.log(currentUser)
 
-        const userAttributes = await fetchUserAttributes()
-        console.log(userAttributes)
   
-    } catch (err) {
-        console.log('Error getting user')
-        console.log(err)
-    }
+
   }
 
   
@@ -67,7 +137,6 @@ import { getUrl } from 'aws-amplify/storage';
 
 useEffect(()=>{
   validateUser()
-  console.log('useEffect')
 
 
 },[])
@@ -85,7 +154,7 @@ useEffect(()=>{
         <h1>Thankyou for doing verification</h1>
         <h2>My Content</h2>
          <button onClick={signOut}>Sign out</button>
-         {userList.map((each)=><p>{each}</p>)}
+         <p>{userProfile.email}</p>
       </header>
     </div>
     );
