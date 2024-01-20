@@ -1,16 +1,63 @@
 .App {
   text-align: center;
+  overflow-y: hidden;
+
 }
 
 .App-logo {
-  height: 40vmin;
+  width: 100vw;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Book-page {
+  width: 99vw;  
+  height: 99vh;
+  pointer-events: none;
+  border:1px solid black;
+}
+.Book-page-frame {
+  width:100vw;
+  pointer-events: none;
+  background-color: #000;
+}
+
+.pageContainer {
+  background-color: #000;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+
+
+
+.App-link {
+  color: #61dafb;
 }
 
 .App-header {
@@ -24,15 +71,163 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.Menu {
+    display:inline-flex;
+
+  justify-content: center;
+  align-items: baseline;
+  background-color: #282c34;
+  
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+
+
+/* ImageGallery.css */
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  grid-auto-rows: minmax(150px, auto); 
+}
+
+.gallery-div {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+   align-items: center; /* Center vertically */
+  text-align: center; /* Additional: Center the text within the div */
+  display:flex;
+  justify-content: center;
+  background-color:white;
+  color:black;}
+  
+.gallery-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+   align-items: center; /* Center vertically */
+  text-align: center; /* Additional: Center the text within the div */
+  display:flex;
+  justify-content: center;
+  background-color:white;
+  color:black;
+ 
+
+  /* Add hover effect */
+}
+
+.gallery-div:hover {
+  transform: scale(1.05);
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+}
+
+
+
+/* Navigation.css */
+nav {
+  background-color: #333;
+  flex-direction: column;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex; /* Display list items horizontally */
+}
+
+li {
+  padding: 15px;
+  color: white;
+  cursor: pointer;
+}
+
+li:hover {
+  background-color: #555;
+}
+
+
+
+.newReader-container{
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap to the next line on smaller screens */
+}
+
+.newReader-element{
+    flex: 1; 
+}
+
+@media (max-width: 768px) {
+  .video-stream, .page-view {
+    flex: 100%; /* Make components take up 100% width on smaller screens */
   }
-  to {
-    transform: rotate(360deg);
-  }
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.page-navigator-container {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 999
+}
+
+.page-navigator {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  pointer-events: auto;
+  color:white;
+}
+
+
+.book-reader-image-container {
+ 
+  overflow:hidden;
+}
+
+.book-reader-image {
+  object-fit: contain;
+  width:100%;
+  height: 100%; 
+}
+
+.menu-drawer{
+  flex-direction: column
 }
