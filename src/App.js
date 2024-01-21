@@ -15,6 +15,14 @@ import { fetchUserAttributes } from 'aws-amplify/auth';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { getUrl } from 'aws-amplify/storage';
 
+import Menu from './menu.js'
+import Bookshelf from './bookshelf.js'
+import Social from './social.js'
+import AccountPage from './account.js'
+import PageTurn from './PageTurn.js'
+import MyBooks from './myBooks.js'
+
+
   Amplify.configure(awsconfig);
   const client = generateClient()
 
@@ -91,6 +99,8 @@ const deleteWillBenish = async () => {
   function App({ user, signOut }) {
 
     const [userProfile,setUserProfile] = useState({exists:false})
+    const [menuSelection,setMenuSelection] = useState(null)
+    const [selectedBook,setSelectedBook] = useState(null)
 
     const getImageUrl = async(filename)=>{
       const getUrlResult = await getUrl({
@@ -105,6 +115,11 @@ const deleteWillBenish = async () => {
          
     }
   
+    const setNewMenuOption=(input)=>{
+    
+      setSelectedBook(null)
+      setMenuSelection(input)
+    }
 
     async function validateUser()  {
       console.log('validate user')
@@ -125,6 +140,7 @@ const deleteWillBenish = async () => {
       }
       console.log('Current User:')
       console.log(currentUser)
+      setMenuSelection('bookshelf')
 
 
 
@@ -151,10 +167,25 @@ useEffect(()=>{
 
       
       <header className="App-header">
-        <h1>Thankyou for doing verification</h1>
-        <h2>My Content</h2>
-         <button onClick={signOut}>Sign out</button>
-         <p>{userProfile.email}</p>
+      {menuSelection === 'social' && <Social  user={userProfile}/>}
+      {menuSelection === 'bookshelf' && 
+          <Bookshelf 
+            setSelectedBook={setSelectedBook} 
+            selectedBook={selectedBook} 
+            user={userProfile}
+            getImageUrl={getImageUrl}
+            />}
+        {menuSelection === 'myBooks' && <MyBooks  
+            setSelectedBook={setSelectedBook} 
+            selectedBook={selectedBook} 
+            user={userProfile}
+            getImageUrl={getImageUrl}
+            />
+        }
+        {menuSelection === 'account' && <AccountPage  user={userProfile} signOut={signOut}/>}
+        {menuSelection === 'pagetest' && <PageTurn  user={userProfile} signOut={signOut}/>}
+       {user !=null && (<Menu onSelect={setNewMenuOption}  setSelectedBook={setSelectedBook} signOut={signOut}/>)}
+ 
       </header>
     </div>
     );
