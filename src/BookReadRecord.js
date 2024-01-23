@@ -333,6 +333,7 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
                  <ReactPlayer
                     url={videoUrl} 
                     controls={false}
+                    playsinline={true}
                     playing
                     />
                     
