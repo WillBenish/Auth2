@@ -231,3 +231,8 @@ img {
 .menu-drawer{
   flex-direction: column
 }
+
+.edit-page-img{
+  height:50vh;
+  width:50vw;
+}

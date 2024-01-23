@@ -6,27 +6,22 @@ import { createImageRaw } from './graphql/mutations';
 const client = generateClient()
 
 const ImageUpload = ({multiple,setUploadedFiles}) => {
-  console.log('ImageUpload')
-  console.log(multiple)
+
   const [selectedFiles, setSelectedFiles] = useState(null);
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     // Get the selected files
     const files = event.target.files;
     console.log(files)
 
     // Update the state with the selected files
-    setSelectedFiles(files);
-  };
+   // setSelectedFiles(files);  
 
-  const handleUpload = async (event) => {
-     event.preventDefault();
-    // Perform the upload logic using selectedFiles
-    var uploadedFileList = [];
-    if (selectedFiles) {
+    var uploadedFileList= [];
+
     await Promise.all(
       // For demonstration purposes, log the file names
-      Array.from(selectedFiles).map(async (file) => {
+      Array.from(files).map(async (file) => {
         console.log('Uploading file:', file.name);
         // Perform your upload logic here (e.g., using FormData and fetch)
         const newImageRaw = await client.graphql({
@@ -59,12 +54,15 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
 
     })
     );
-    }
-    
+
+
     console.log('list from imageUpload:')
     console.log(uploadedFileList)
     setUploadedFiles(uploadedFileList);
+
   };
+
+
   
   
 
@@ -79,7 +77,7 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
   
       />
 
-      <button onClick={handleUpload}>Upload</button>
+      
       <p/>
     </div>
   );

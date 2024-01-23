@@ -2,22 +2,26 @@ import React, { useState,useEffect,useRef } from 'react';
 
 import { generateClient } from "aws-amplify/api";
 import { listBooks } from "./graphql/queries";
-import { updateBook } from './graphql/mutations';
+import { updateBook,deleteBook } from './graphql/mutations';
 
 import ImageUpload from './imageUpload.js'
 import VideoRecorder from './VideoRecorder.js'
 
 import ReactPlayer from 'react-player';
 import DeleteIcon from '@mui/icons-material/Delete';
-import NewReading from './NewReading.js'
+import EditIcon from '@mui/icons-material/Edit';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+import NewReading from './NewReading.js'
+import BookReadRecord from './BookReadRecord.js'
+import EditPage from './EditPage'
+
+import Modal from 'react-modal';
 
   
   
 const EditBook = ({setSelectedBook,user,selectedBook,getImageUrl}) => {
-    const returnToSelection = ()=>{
-        setSelectedBook(null)
-    }
+
     
 
     
@@ -29,14 +33,19 @@ const EditBook = ({setSelectedBook,user,selectedBook,getImageUrl}) => {
     const [videoRecordingUrl,setVideoRecordingUrl]=useState(null)
     const videoPlayerRef = useRef(null)
     const [newRecordingActive,setNewRecordingActive] = useState(false)
+    const [selectedPageIndex,setSelectedPageIndex] = useState(null)
+    const [showDeleteModal,setShowDeleteModal] = useState(false)
     
-    
+    const returnToSelection = ()=>{
+        setSelectedBook(null)
+    }
     
     const client = generateClient()
    
 
     const getBook = async ()=>{
 
+        console.log('get book!')
         //
             // List all items
          //   console.log(selectedBook)
@@ -250,22 +259,91 @@ const EditBook = ({setSelectedBook,user,selectedBook,getImageUrl}) => {
       setPages(newPages)
       console.log(pages.length)
   }
+
+  const handleEditPage = (pageIndex)=>{
+    console.log('EditPageSelected')
+    setSelectedPageIndex(pageIndex)
+  }
+
+  const handleEditComplete = ()=>{
+    setSelectedPageIndex(null)
+  }
+
+  const initiateDelete = () =>{
+    console.log('initiate delete')
+    setShowDeleteModal(true)
+    
+  }
+
+  const deleteBook = async () =>{
+    console.log('delete initiated')
+    console.log(book)
+    const bookDetails = {
+        id: book.id
+      };
+
+      console.log(bookDetails)
+
+      try{
+        const updatedBook = await client.graphql({
+            query: updateBook,
+            variables: {
+                input: {
+                    id:book.id,
+                    creatorUserId: book.creatorUserId+'_archived'
+                }
+                }
+        });
+    } catch(err){
+        console.log('error from updatedBook')
+        console.log(err)
+    }
+
+    setSelectedBook(null)
+
+  }
     
     
     return <>
-    {newRecordingActive && <NewReading book={book} pages={pages}/>}
-    {!newRecordingActive && (
+    {showDeleteModal && <div style={{height:'100vh',width:'100vw', zIndex:2}}>
+        <div style={{ filter: 'none',top:'25vh',left:'10vw', height:'50vh',width:'80vw',color:'white',backgroundColor:'black',zIndex:1,borderRadius:'25px',position:'absolute'}}>
+        <p>Are you sure you want to delete this book?</p>
+        <button onClick={deleteBook}>Yes, Delete this Book</button>
+        <button onClick={()=>setShowDeleteModal(false)}>Cancel</button>
+        </div></div>}
+    {newRecordingActive && false && !selectedPageIndex && <NewReading book={book} pages={pages} />}
+    {newRecordingActive && !selectedPageIndex && 
+        <BookReadRecord 
+        book={book} 
+        pages={pages}
+        editMode={true}
+        setNewRecordingActive={setNewRecordingActive}
+        />
+        }
+    {selectedPageIndex && 
+        <>
+            <ArrowBackIcon onClick={()=> handleEditComplete()}/>
+            <EditPage 
+                            user={user}
+                            book={book}
+                            pages={pages}
+                            setPages={setPages}
+                            selectedPageIndex={selectedPageIndex}
+                            getBook={getBook}
+                />
+        </>}
+    {!newRecordingActive && !selectedPageIndex && (
             <>
             <span onClick={()=>returnToSelection()}>
                     Return to My Books
                 </span>
             <div style={{width:"250px"}}>
             <p>Cover Image</p>
-                <button>edit cover page</button>    
                 <img key='CreateNew.png' src={coverImageUrl} alt='CoverImage' className="gallery-image" />
                 
-                <ImageUpload multiple={false} setUploadedFiles={uploadNewCoverPage} />
+                Upload New Cover Image: <ImageUpload multiple={false} setUploadedFiles={uploadNewCoverPage} />
             </div>
+            <button onClick={initiateDelete} > Delete Book </button>
             <button onClick={()=>setNewRecordingActive(true)} > Record Full Book </button>
          
             <button onClick={()=>updatePages()}>Save Sort and Page Deletions</button>
@@ -273,37 +351,33 @@ const EditBook = ({setSelectedBook,user,selectedBook,getImageUrl}) => {
                 onDrop={handleDrop}
                 >
                     {pages.map((each,index)=> (
-                         <div className="gallery-div"
-                            draggable
-                            onDragStart={handleDragStart(index)}
-                            onDragOver={handleDragOver(index)}
-                            style={{ cursor: 'grab', marginRight: '10px' }}
-                            >
-                                      <button
+                                    <div className="gallery-div"
+                                    draggable
+                                    onDragStart={handleDragStart(index)}
+                                    onDragOver={handleDragOver(index)}
+                                    style={{ cursor: 'grab', marginRight: '10px' ,position:'relative'}}
+                                    >
+                                         <button
                                            
-                                            style={{
-                                              position: 'absolute',
-                                              top: '5px',
-                                              right: '5px',
-                                              background: 'none',
-                                              border: 'none',
-                                              cursor: 'pointer',
-                                            }}
-                                          >
-                                            <DeleteIcon onClick={()=>handlePageDelete(index)}/>
-                                          </button>
-                                <img key={each.pageNumber} src={each.imageUrl} alt='CoverImage' className="gallery-image" />
-                        </div>
+                                           style={{position: 'absolute',
+                                             top: '5px',
+                                             right: '5px',
+                                             background: 'none',
+                                             border: 'none',
+                                             cursor: 'pointer',
+                                           }}
+                                         >
+                                           <EditIcon onClick={()=>handleEditPage(index)}/>
+                                           <DeleteIcon onClick={()=>handlePageDelete(index)}/>
+                                         </button>
+                               <img key={each.pageNumber} src={each.imageUrl} alt='CoverImage' className="gallery-image" />
+
+
+                         {/*EditPage = ({user,book,pages,setPages,selectedPageIndex,setSelectedPageIndex})*/}
+                    </div>
                     ))}
                 </div>
             <ImageUpload multiple={true} setUploadedFiles={uploadNewPages} />
-                 <ReactPlayer
-                    url={videoRecordingUrl} 
-                    width="640"
-                    height="360"
-                    controls
-                    playing
-                  />
         </>)}
 
 

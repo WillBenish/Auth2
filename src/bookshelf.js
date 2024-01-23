@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import SwipeImageSlider from './book-swipe.js'
 import BookReader from './BookReader.js'
+import BookReadRecord from './BookReadRecord.js'
 
 import { generateClient } from "aws-amplify/api";
 import { listBooks, listSubscriptions } from "./graphql/queries";
@@ -12,7 +13,7 @@ const BookShelf = ({ books ,setSelectedBook,selectedBook,user,getImageUrl}) => {
   
 const [bookList,setBookList] =useState([])
 const [book,setBook] = useState(null)
-
+const [pages,setPages] = useState([])
 
 useEffect(() => {
   console.log('Bookshelf useEffect')
@@ -60,12 +61,44 @@ useEffect(() => {
 
 const images = ['local1.png','local2.png','local3.png','local1.png','local2.png','local3.png']
 
-const updateBookSelection = (bookSelection) =>{
+const updateBookSelection = async (bookSelection) =>{
   console.log('select a book')
   
   console.log(bookSelection)
   setBook(bookSelection);
   setSelectedBook(bookSelection.id)
+
+  var pagesJSON = []
+        if(Array.isArray(bookSelection.bookPages)){
+            
+         pagesJSON = bookSelection.bookPages.map(each => JSON.parse(each))
+         
+         
+         
+        }
+        
+        let pagesJSONwithURLs = []
+        await Promise.all(
+          pagesJSON.map(async(each,index)=>{ 
+              if(!each.pageNumber){
+                  each.pageNumber=index
+              }
+              each.imageUrl=null
+              each.videoUrl = null
+              
+              var newImageUrl = await getImageUrl(each.imageKey)
+              if(newImageUrl){each.imageUrl = newImageUrl}
+              
+              var newVideoUrl = await getImageUrl(each.video_s3_key)
+              
+              if(newVideoUrl){each.videoUrl = newVideoUrl}
+              
+              
+               pagesJSONwithURLs.push(each)
+              
+          })
+          )
+        setPages(pagesJSONwithURLs)
 }
   
   return (<>
@@ -82,7 +115,8 @@ const updateBookSelection = (bookSelection) =>{
   
     </div>
     }
-    {selectedBook &&      <BookReader selectedBook={selectedBook} user={user} getImageUrl={getImageUrl} />}
+    {selectedBook &&   false &&   <BookReader selectedBook={selectedBook} user={user} getImageUrl={getImageUrl} />}
+    {selectedBook &&   pages.length>0  &&   <BookReadRecord book={book} pages={pages} />}
     
       </>
   );

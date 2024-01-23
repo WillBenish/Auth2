@@ -3,7 +3,9 @@ import react,{ useState ,useEffect}  from 'react'
 
 import './App.css';
 import { Amplify } from 'aws-amplify';
-import { withAuthenticator} from '@aws-amplify/ui-react';
+import { withAuthenticator} from '@aws-amplify/ui-react'
+
+import '@aws-amplify/ui-react/styles.css';
 import awsconfig from './aws-exports';
 
 import { generateClient } from "aws-amplify/api";

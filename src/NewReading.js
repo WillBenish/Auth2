@@ -12,8 +12,9 @@ import SwipeImageSlider from './book-swipe.js'
 
 import ReactPlayer from 'react-player';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ConsoleLogger } from 'aws-amplify/utils';
 
-const NewReading = ({book,pages}) => {
+const NewReading = ({book,pages,selectedPageIndex}) => {
     
     
     const [images,setImages] = useState([])
@@ -50,7 +51,9 @@ const NewReading = ({book,pages}) => {
         const blob = recorderRef.current.getBlob();
         const videoUrl = URL.createObjectURL(blob);
         console.log('Video URL:', videoUrl);
+        if(pageIndex != null){
         uploadVideoBlob(blob,pageIndex);
+        }
         
         setIsRecording(false);
         
@@ -139,8 +142,29 @@ const NewReading = ({book,pages}) => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
     startRecording()
   };
+
+  const handleRestartRecording=()=>{
+    console.log('handleRestart')
+    stopRecording()
+    startRecording()
+  }
+
+  const handleFinishRecording=()=>{
+    console.log('finish')
+    stopRecording(currentIndex)
+  }
+
+  const handleStart = () => {
+    console.log('handlestart')
+    stopRecording(currentIndex)
+    startRecording()
+  };
     
     useEffect(()=>{
+      if(selectedPageIndex){
+        setCurrentIndex(selectedPageIndex)
+      }
+      console.log(selectedPageIndex)
         loadRecorder()
         const newImageArray = pages.map(each=> each.imageUrl)
         setImages(newImageArray)
@@ -152,11 +176,16 @@ const NewReading = ({book,pages}) => {
     return (<><p>Test</p>
       <div className="newReader-container">
       <video ref={videoRef} autoPlay playsInline muted />
+      {!isRecording && (<button onClick={handleRestartRecording}>Starts Recording</button>)}
+          {isRecording &&(<button onClick={handleRestartRecording}>re-start for this page</button>)}
+          {isRecording && (selectedPageIndex != null || currentIndex+1 >= images.length) && (<button onClick={handleFinishRecording}>Finish</button>)}
       <div className="page-view">
         <div className="page-navigator-container">
-          <button onClick={handlePrev} className="page-navigator">Previous</button>
-          {currentIndex+1<images.length && (<button onClick={handleNext} className="page-navigator">Next</button>)}
-          {currentIndex+1 >= images.length && (<button onClick={handleNext} className="page-navigator">Finish</button>)}
+          
+
+          {selectedPageIndex == null && <button onClick={handlePrev} className="page-navigator">{currentIndex>=images.length && "Previous"}</button>}
+          {selectedPageIndex == null && currentIndex+1<images.length && (<button onClick={handleNext} className="page-navigator">Next</button>)}
+          {currentIndex+1 >= images.length && (<button onClick={handleFinishRecording} className="page-navigator">Finish</button>)}
         </div>
         <img src={images[currentIndex]} alt={`Image ${currentIndex + 1}`} />
       </div>
