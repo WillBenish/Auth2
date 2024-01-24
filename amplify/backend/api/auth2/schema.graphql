@@ -56,7 +56,7 @@ type Book @model @auth(rules: [{allow: public}]) {
 
 
 type User @model @auth(rules: [{allow: public}]) {
-  id: ID!
+  id: ID
   email: AWSEmail! @primaryKey
   given_name: String
   family_name: String

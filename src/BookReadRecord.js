@@ -183,9 +183,9 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
 
     /*Functions for Recording*/
     const loadRecorder =() =>{
-        navigator.mediaDevices.getUserMedia({ video: true , audio: true})      .then((stream) => {
+        navigator.mediaDevices.getUserMedia({ video: true , audio: true}).then((stream) => {
             videoRef.current.srcObject = stream;
-            recorderRef.current = RecordRTC(stream, { type: 'video' });
+            recorderRef.current = RecordRTC(stream, { type: 'video', mimeType: 'video/mp4' });
           })
       }
     
@@ -193,7 +193,7 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
         navigator.mediaDevices.getUserMedia({ video: true , audio: true})
           .then((stream) => {
             videoRef.current.srcObject = stream;
-            recorderRef.current = RecordRTC(stream, { type: 'video' });
+            recorderRef.current = RecordRTC(stream, { type: 'video', mimeType: 'video/mp4' });
             recorderRef.current.startRecording();
             setIsRecording(true);
           })

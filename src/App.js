@@ -64,7 +64,7 @@ const createUserRow = async (userAttributes) => {
         query: createUser,
         variables: {
             input: {
-            "email": 'will.benish@gmail.com'}
+            "email": userAttributes.email}
             }
         })
         console.log(newUserRow)
@@ -132,6 +132,7 @@ const deleteWillBenish = async () => {
       var currentUser =  await getUserByEmail(userAttributes.email)
   
       if(!currentUser.exists){
+        console.log('user does not exist, creating user')
         var newUser = await createUserRow(userAttributes)
         if(newUser.exists){
           currentUser = newUser
