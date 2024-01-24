@@ -23,6 +23,7 @@ import Social from './social.js'
 import AccountPage from './account.js'
 import PageTurn from './PageTurn.js'
 import MyBooks from './myBooks.js'
+import TestVideoRecorder from './TestVideoRecorder.js';
 
 
   Amplify.configure(awsconfig);
@@ -186,9 +187,9 @@ useEffect(()=>{
             />
         }
         {menuSelection === 'account' && <AccountPage  user={userProfile} signOut={signOut}/>}
-        {menuSelection === 'pagetest' && <PageTurn  user={userProfile} signOut={signOut}/>}
+       
        {user !=null && (<Menu onSelect={setNewMenuOption}  setSelectedBook={setSelectedBook} signOut={signOut}/>)}
- 
+       {menuSelection === 'videotest' && <TestVideoRecorder />}
       </header>
     </div>
     );

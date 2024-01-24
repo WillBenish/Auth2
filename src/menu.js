@@ -56,6 +56,10 @@ const FloatingMenu = ({onSelect,setSelectedBook,signOut}) => {
             <ListItemText primary="page test" />
           </ListItem>
 
+          <ListItem button onClick={()=>makeSelection('videotest')}>
+            <ListItemText primary="Test Video" />
+          </ListItem>
+
           <ListItem button onClick={()=>makeSelection('account')}>
             <ListItemText primary="My Account" />
           </ListItem>
