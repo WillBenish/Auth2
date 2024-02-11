@@ -41,7 +41,7 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
             newVideoUrl= pages[pageIndex].videoUrl
             newImageUrl = pages[pageIndex].imageUrl
         }
-        
+        console.log(pages[pageIndex])
         setVideoUrl(newVideoUrl)
         setImageUrl(newImageUrl)
         
@@ -55,7 +55,7 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
     -load the recorder (IF editMode is enabled)
     */
     useEffect(() => {
-        
+        console.log(`pages: ${JSON.stringify(pages)}`)
         setViewportDimensions({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -233,7 +233,7 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
             }
             }
         });
-        const newFileName = newMediaRaw.data.createMediaRaw.id+'.webm'
+        const newFileName = newMediaRaw.data.createMediaRaw.id+'.mp4'
             
             try {
               const result = await uploadData({

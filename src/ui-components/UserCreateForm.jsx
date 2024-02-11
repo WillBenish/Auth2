@@ -23,12 +23,14 @@ export default function UserCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
+    id: "",
     email: "",
     given_name: "",
     family_name: "",
     oauth_provider: "",
     oauth_provider_id: "",
   };
+  const [id, setId] = React.useState(initialValues.id);
   const [email, setEmail] = React.useState(initialValues.email);
   const [given_name, setGiven_name] = React.useState(initialValues.given_name);
   const [family_name, setFamily_name] = React.useState(
@@ -42,6 +44,7 @@ export default function UserCreateForm(props) {
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
+    setId(initialValues.id);
     setEmail(initialValues.email);
     setGiven_name(initialValues.given_name);
     setFamily_name(initialValues.family_name);
@@ -50,6 +53,7 @@ export default function UserCreateForm(props) {
     setErrors({});
   };
   const validations = {
+    id: [],
     email: [{ type: "Required" }, { type: "Email" }],
     given_name: [],
     family_name: [],
@@ -82,6 +86,7 @@ export default function UserCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
+          id,
           email,
           given_name,
           family_name,
@@ -141,6 +146,35 @@ export default function UserCreateForm(props) {
       {...rest}
     >
       <TextField
+        label="Id"
+        isRequired={false}
+        isReadOnly={false}
+        value={id}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              id: value,
+              email,
+              given_name,
+              family_name,
+              oauth_provider,
+              oauth_provider_id,
+            };
+            const result = onChange(modelFields);
+            value = result?.id ?? value;
+          }
+          if (errors.id?.hasError) {
+            runValidationTasks("id", value);
+          }
+          setId(value);
+        }}
+        onBlur={() => runValidationTasks("id", id)}
+        errorMessage={errors.id?.errorMessage}
+        hasError={errors.id?.hasError}
+        {...getOverrideProps(overrides, "id")}
+      ></TextField>
+      <TextField
         label="Email"
         isRequired={true}
         isReadOnly={false}
@@ -149,6 +183,7 @@ export default function UserCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              id,
               email: value,
               given_name,
               family_name,
@@ -177,6 +212,7 @@ export default function UserCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              id,
               email,
               given_name: value,
               family_name,
@@ -205,6 +241,7 @@ export default function UserCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              id,
               email,
               given_name,
               family_name: value,
@@ -233,6 +270,7 @@ export default function UserCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              id,
               email,
               given_name,
               family_name,
@@ -261,6 +299,7 @@ export default function UserCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
+              id,
               email,
               given_name,
               family_name,

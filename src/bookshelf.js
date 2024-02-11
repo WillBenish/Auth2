@@ -85,13 +85,16 @@ const updateBookSelection = async (bookSelection) =>{
               }
               each.imageUrl=null
               each.videoUrl = null
+              console.log(`this is the video_s3_key${each.video_s3_key}`)
+              console.log(each.video_s3_key.replace(/\.webm$/, ".mp4"))
               
               var newImageUrl = await getImageUrl(each.imageKey)
               if(newImageUrl){each.imageUrl = newImageUrl}
               
-              var newVideoUrl = await getImageUrl(each.video_s3_key)
+              var newVideoUrl = await getImageUrl(each.video_s3_key.replace(/\.webm$/, ".webm"))
               
-              if(newVideoUrl){each.videoUrl = newVideoUrl}
+              if(newVideoUrl){
+                each.videoUrl = newVideoUrl}
               
               
                pagesJSONwithURLs.push(each)

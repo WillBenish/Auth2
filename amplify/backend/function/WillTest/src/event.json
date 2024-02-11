@@ -1,0 +1,40 @@
+{
+  "Records": [
+      {
+          "eventID": "a087dbe299b78086f092f9aa2755f172",
+          "eventName": "INSERT",
+          "eventVersion": "1.1",
+          "eventSource": "aws:dynamodb",
+          "awsRegion": "us-east-2",
+          "dynamodb": {
+              "ApproximateCreationDateTime": 1706220410,
+              "Keys": {
+                  "id": {
+                      "S": "e3c878a2-ef4e-44e9-a9aa-11e695fe2e09"
+                  }
+              },
+              "NewImage": {
+                  "originalFileName": {
+                      "S": "uploadedFromApp"
+                  },
+                  "createdAt": {
+                      "S": "2024-01-25T22:06:49.962Z"
+                  },
+                  "__typename": {
+                      "S": "MediaRaw"
+                  },
+                  "id": {
+                      "S": "e3c878a2-ef4e-44e9-a9aa-11e695fe2e09"
+                  },
+                  "updatedAt": {
+                      "S": "2024-01-25T22:06:49.962Z"
+                  }
+              },
+              "SequenceNumber": "29505200000000008925132613",
+              "SizeBytes": 191,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "eventSourceARN": "arn:aws:dynamodb:us-east-2:224239308654:table/MediaRaw-hiyqziekq5bxlceioa7c3cwo5y-staging/stream/2024-01-19T16:44:56.911"
+      }
+  ]
+}

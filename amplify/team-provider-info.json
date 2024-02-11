@@ -20,6 +20,20 @@
       },
       "api": {
         "auth2": {}
+      },
+      "function": {
+        "sampleFileConvert": {
+          "deploymentBucketName": "amplify-auth2-staging-224759-deployment",
+          "s3Key": "amplify-builds/sampleFileConvert-6e347277476150764262-build.zip"
+        },
+        "WillTest": {
+          "deploymentBucketName": "amplify-auth2-staging-224759-deployment",
+          "s3Key": "amplify-builds/WillTest-537061386a376f4a4e43-build.zip"
+        },
+        "fileconvert2": {
+          "deploymentBucketName": "amplify-auth2-staging-224759-deployment",
+          "s3Key": "amplify-builds/fileconvert2-4171716c4f446675556e-build.zip"
+        }
       }
     }
   }

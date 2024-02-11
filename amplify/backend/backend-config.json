@@ -49,6 +49,85 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "WillTest": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "fileconvert2": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "auth2"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "sampleFileConvert": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_WillTest_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "WillTest"
+        }
+      ]
+    },
+    "AMPLIFY_function_WillTest_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "WillTest"
+        }
+      ]
+    },
+    "AMPLIFY_function_fileconvert2_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fileconvert2"
+        }
+      ]
+    },
+    "AMPLIFY_function_fileconvert2_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fileconvert2"
+        }
+      ]
+    },
+    "AMPLIFY_function_sampleFileConvert_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sampleFileConvert"
+        }
+      ]
+    },
+    "AMPLIFY_function_sampleFileConvert_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sampleFileConvert"
+        }
+      ]
+    }
+  },
   "storage": {
     "storystore": {
       "dependsOn": [],
