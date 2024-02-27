@@ -75,8 +75,8 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
         }
         // Remove event listener when the component unmounts
         return () => {
-            document.removeEventListener('keydown', handleKeyPress);
-            window.removeEventListener('resize', handleResize);
+            //document.removeEventListener('keydown', handleKeyPress);
+            //window.removeEventListener('resize', handleResize);
         };
     }, [pages]);
 
@@ -233,7 +233,8 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
             }
             }
         });
-        const newFileName = newMediaRaw.data.createMediaRaw.id+'.mp4'
+        const coreKey = newMediaRaw.data.createMediaRaw.id
+        const newFileName = 'video_webm/'+coreKey+'.webm'
             
             try {
               const result = await uploadData({
@@ -250,7 +251,7 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
             }
             
     
-            uploadNewReadMedia(newFileName,pageIndex)
+            uploadNewReadMedia(coreKey,pageIndex)
             
             
         }

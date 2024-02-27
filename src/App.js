@@ -106,17 +106,39 @@ const deleteWillBenish = async () => {
     const [selectedBook,setSelectedBook] = useState(null)
 
     const getImageUrl = async(filename)=>{
+
+      try {
       const getUrlResult = await getUrl({
              key: filename,
              options: {
-                 accessLevel:'public'
+                 accessLevel:'public',
+                 validateObjectExistence:true
              },
          })
          
  
          return getUrlResult.url.href
+        }
+        catch(err){
+          console.log('trying alternative url')
+          console.log(filename)
+          const newFilename = filename.split('/')[1].split('.')[0]+'.webm'
+          //let outputString = inputString.replace(/video_mp4/g, 'video_webm');
+
+          const getUrlResult = await getUrl({
+            key: newFilename,
+            options: {
+                accessLevel:'public'
+            },
+        })
+        
+
+        return getUrlResult.url.href
+        }
          
     }
+
+
   
     const setNewMenuOption=(input)=>{
     
