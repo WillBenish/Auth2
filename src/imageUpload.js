@@ -79,7 +79,7 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
 <div>Or Upload from Camera Roll</div>
 <input
         type="file"
-        accept="image/HEIC*" // Accept only image files
+        accept="image/*" // Accept only image files
         multiple={multiple} // Allow multiple file selection
         onChange={handleFileChange}
   
