@@ -28,7 +28,7 @@
         },
         "WillTest": {
           "deploymentBucketName": "amplify-auth2-staging-224759-deployment",
-          "s3Key": "amplify-builds/WillTest-537061386a376f4a4e43-build.zip"
+          "s3Key": "amplify-builds/WillTest-4c4e44684c7a4e324338-build.zip"
         },
         "fileconvert2": {
           "deploymentBucketName": "amplify-auth2-staging-224759-deployment",

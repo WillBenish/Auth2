@@ -84,6 +84,7 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
         onChange={handleFileChange}
   
       />
+      <button onClick={handleFileChange}>Upload</button>
 
       
       <p/>

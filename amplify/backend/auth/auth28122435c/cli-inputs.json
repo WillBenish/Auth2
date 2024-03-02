@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "auth28122435c_identitypool_8122435c",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "auth28122435c",
     "userPoolName": "auth28122435c_userpool_8122435c",
     "autoVerifiedAttributes": [
@@ -25,18 +25,14 @@
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [
-      "email"
-    ],
-    "userpoolClientReadAttributes": [
-      "email"
-    ],
+    "userpoolClientWriteAttributes": [],
+    "userpoolClientReadAttributes": [],
     "userpoolClientLambdaRole": "auth288122435c_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
     "sharedId": "8122435c",
     "resourceName": "auth28122435c",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "defaultSocial",
+    "useDefault": "manual",
     "hostedUI": true,
     "usernameAttributes": [
       "email"
@@ -64,6 +60,10 @@
     },
     "breakCircularDependency": true,
     "dependsOn": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://main.dhisd6r045o28.amplifyapp.com/\",\"https://www.readbookstogether.org/\",\"https://readbookstogether.dhisd6r045o28.amplifyapp.com/\",\"https://192.168.1.4:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://main.dhisd6r045o28.amplifyapp.com/\",\"https://www.readbookstogether.org/\",\"https://readbookstogether.dhisd6r045o28.amplifyapp.com/\",\"https://localhost:3000/\",\"https://192.168.1.4:3000/\"]}"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://main.dhisd6r045o28.amplifyapp.com/\",\"https://www.readbookstogether.org/\",\"https://readbookstogether.dhisd6r045o28.amplifyapp.com/\",\"https://192.168.1.4:3000/\",\"https://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://main.dhisd6r045o28.amplifyapp.com/\",\"https://www.readbookstogether.org/\",\"https://readbookstogether.dhisd6r045o28.amplifyapp.com/\",\"https://localhost:3000/\",\"https://192.168.1.4:3000/\"]}",
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "thirdPartyAuth": false,
+    "authProviders": []
   }
 }

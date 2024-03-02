@@ -86,8 +86,11 @@ const updateBookSelection = async (bookSelection) =>{
               each.imageUrl=null
               each.videoUrl = null
               console.log(`this is the video_s3_key${each.video_s3_key}`)
-              console.log(each.video_s3_key.replace(/\.webm$/, ".mp4"))
-              const correctedVideo_s3_key = each.video_s3_key.split('.')[0]
+              var correctedVideo_s3_key = each.video_s3_key
+
+              if(correctedVideo_s3_key){
+                correctedVideo_s3_key = correctedVideo_s3_key.split('.')[0]
+                }
               
               var newImageUrl = await getImageUrl(each.imageKey)
               if(newImageUrl){each.imageUrl = newImageUrl}

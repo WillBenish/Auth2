@@ -180,11 +180,7 @@ li:hover {
     flex: 1; 
 }
 
-@media (max-width: 768px) {
-  .video-stream, .page-view {
-    flex: 100%; /* Make components take up 100% width on smaller screens */
-  }
-}
+
 
 .image-container {
   position: relative;
@@ -235,4 +231,18 @@ img {
 .edit-page-img{
   height:50vh;
   width:50vw;
+}
+
+
+.react-player video {
+  position: relative;
+  left: 0;
+  top: 0;
+  transform: none;
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

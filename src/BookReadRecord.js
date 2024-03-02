@@ -55,7 +55,7 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
     -load the recorder (IF editMode is enabled)
     */
     useEffect(() => {
-        console.log(`pages: ${JSON.stringify(pages)}`)
+        //console.log(`pages: ${JSON.stringify(pages)}`)
         setViewportDimensions({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -324,25 +324,34 @@ const BookReader = ({book,pages,editMode,selectedPageIndex,setNewRecordingActive
         <div style={{display:'flex' ,flexDirection: isVertical ? 'column' : 'row',
                     alignItems: 'center', // Center vertically
         justifyContent: 'center', // Center horizontally
-        height: '100vh', // Full viewport height
+        height: '100%', // Full viewport height
+        width:'100%',
          overflow: 'hidden' 
         }}>
-            <div className="page-video-container" 
-                    height='100vh'
-                    width='100vw'
-                    style={{ objectFit: 'fill' }}>
+            <div
+              style={{display:'flex'
+                      , height:isVertical ? '50%':'100%'
+                      , width: isVertical ? '100%' : '50%',
+                       alignItems: 'center', // Center vertically
+                       justifyContent: 'center', // Center horizontally
+                      }
+                      }>
                  <ReactPlayer
+                    className='book-reader-image'
                     url={videoUrl} 
                     controls={false}
                     playsinline
                     playing
+                    onPlay={handleResize}
+                    style={{position:'relative',maxWidth:"100%",maxHeight:"100%"}}
                     />
+                    
                     
 
                 {editMode &&  <video ref={videoRef} autoPlay playsInline muted />
                 }
             </div>
-            <img ref={imageRef} src={imageUrl} className="book-reader-image" onLoad={handleImageLoad} style={{height:isVertical ? '50vh':'100vh', width: isVertical ? '100vw' : '50vw'}}/>
+            <img ref={imageRef} src={imageUrl} className="book-reader-image" onLoad={handleImageLoad} style={{height:isVertical ? '50%':'100%', width: isVertical ? '100%' : '50%'}}/>
             
              
               

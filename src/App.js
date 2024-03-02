@@ -106,7 +106,12 @@ const deleteWillBenish = async () => {
     const [selectedBook,setSelectedBook] = useState(null)
 
     const getImageUrl = async(filename)=>{
-
+      if(!filename){
+        console.log('no filename sent')
+        return 'https://images.wsj.net/im-932574?width=367&height=245&pixel_ratio=2'
+      }
+      console.log(filename)
+      const hasFolder = filename.split('/').length >1
       try {
       const getUrlResult = await getUrl({
              key: filename,
@@ -122,9 +127,9 @@ const deleteWillBenish = async () => {
         catch(err){
           console.log('trying alternative url')
           console.log(filename)
-          const newFilename = filename.split('/')[1].split('.')[0]+'.webm'
-          //let outputString = inputString.replace(/video_mp4/g, 'video_webm');
-
+        console.log(`hasfolder: ${hasFolder}`)
+          const newFilename = hasFolder ? filename.split('/')[1].split('.')[0]+'.webm' : filename.split('.')[0]+'.webm' 
+          
           const getUrlResult = await getUrl({
             key: newFilename,
             options: {

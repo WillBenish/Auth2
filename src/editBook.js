@@ -86,6 +86,7 @@ const EditBook = ({setSelectedBook,user,selectedBook,getImageUrl}) => {
             if(!each.pageNumber){
                 each.pageNumber=index
             }
+            console.log(`eachImage: ${each.imageKey}`)
             var newImageUrl = await getImageUrl(each.imageKey)
             each.imageUrl = newImageUrl
             
@@ -343,15 +344,14 @@ const EditBook = ({setSelectedBook,user,selectedBook,getImageUrl}) => {
                 
                 Upload New Cover Image: <ImageUpload multiple={false} setUploadedFiles={uploadNewCoverPage} />
             </div>
-            <button onClick={initiateDelete} > Delete Book </button>
-            <button onClick={()=>setNewRecordingActive(true)} > Record Full Book </button>
-         
-            <button onClick={()=>updatePages()}>Save Sort and Page Deletions</button>
+            <button key='deleteButton' onClick={initiateDelete} > Delete Book </button>
+            <button key='record/full' onClick={()=>setNewRecordingActive(true)} > Record Full Book </button>
+            <button key='saveSortButton' onClick={()=>updatePages()}>Save Sort and Page Deletions</button>
             <div  className="image-gallery"   
                 onDrop={handleDrop}
                 >
                     {pages.map((each,index)=> (
-                                    <div className="gallery-div"
+                                    <div key={`page${index}`} className="gallery-div"
                                     draggable
                                     onDragStart={handleDragStart(index)}
                                     onDragOver={handleDragOver(index)}
