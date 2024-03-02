@@ -68,7 +68,32 @@ const EditPage = ({user,book,pages,setPages,selectedPageIndex,setSelectedPageInd
         
     }
     
+    const saveNewPageVideo = async(files) => {
+        var newPages = pages
+        newPages[selectedPageIndex].video_s3_key = files[0]
+        console.log(newPages)
+        setPages(newPages)
 
+        var allPagesString = newPages.map(each=>JSON.stringify(each))
+
+        try{
+            const updatedBook = await client.graphql({
+                query: updateBook,
+                variables: {
+                    input: {
+                        id:book.id,
+                		bookPages: allPagesString
+                	}
+                    }
+            });
+        } catch(err){
+            console.log('error from updatedBook')
+            console.log(err)
+        }
+
+        getBook()
+        
+    }
     
  
     
@@ -114,11 +139,13 @@ const EditPage = ({user,book,pages,setPages,selectedPageIndex,setSelectedPageInd
 
                 <ImageUpload multiple={false} setUploadedFiles={saveNewPageImage} />  
                              <button onClick={handleRecordSpecificImage}>Record New Video</button>
-
-                             <p>Save and Close</p>
+                            <p>Upload New Video</p>
+                             <ImageUpload multiple={false} setUploadedFiles={saveNewPageVideo} />  
+              
                                 <div className="edit-page-img">
                                 <img key={pages[selectedPageIndex].pageNumber} src={pages[selectedPageIndex].imageUrl} alt='CoverImage'  />
                                 </div>
+                
                      
 
             

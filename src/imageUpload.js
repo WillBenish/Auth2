@@ -34,7 +34,11 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
           });
           
         console.log(newImageRaw)
-        const newFileName = newImageRaw.data.createImageRaw.id;
+        var newFileName = newImageRaw.data.createImageRaw.id;
+        var fileNameForSave = newFileName
+        if(file.name.split('.')[1]=='mp4'){
+          newFileName='video_mp4/'+newFileName+'.mp4'
+        }
         try {
           const result = await uploadData({
             key: newFileName,
@@ -49,7 +53,7 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
           console.log('Error : ', error);
         }
         
-        uploadedFileList.push(newFileName);
+        uploadedFileList.push(fileNameForSave);
 
 
     })
