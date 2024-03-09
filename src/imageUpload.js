@@ -11,7 +11,10 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
 
   const handleFileChange = async (event) => {
     // Get the selected files
-    const files = event.target.files;
+    console.log('unsortedFiles')
+    console.log(event.target.files)
+    const files = Array.from(event.target.files).sort((a,b)=>a.name.localeCompare(b.name));
+    console.log('sorted')
     console.log(files)
 
     // Update the state with the selected files
@@ -21,7 +24,7 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
 
     await Promise.all(
       // For demonstration purposes, log the file names
-      Array.from(files).map(async (file) => {
+      files.map(async (file) => {
         console.log('Uploading file:', file.name);
         // Perform your upload logic here (e.g., using FormData and fetch)
         const newImageRaw = await client.graphql({
@@ -36,7 +39,7 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
         console.log(newImageRaw)
         var newFileName = newImageRaw.data.createImageRaw.id;
         var fileNameForSave = newFileName
-        if(file.name.split('.')[1]=='mp4'){
+        if(file.name.split('.')[1]==='mp4'){
           newFileName='video_mp4/'+newFileName+'.mp4'
         }
         try {
@@ -60,8 +63,7 @@ const ImageUpload = ({multiple,setUploadedFiles}) => {
     );
 
 
-    console.log('list from imageUpload:')
-    console.log(uploadedFileList)
+
     setUploadedFiles(uploadedFileList);
 
   };
